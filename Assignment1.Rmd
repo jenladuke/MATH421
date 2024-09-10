@@ -36,9 +36,19 @@ Assignment 1
 | Header | Title |
 | Paragraph | Text |
 
+|   | Q1 | Q2 | Q3 | Q4 |
+|---|----|----|----|----|
+| 1 | 90 | 94 | 92 | 91 |
+| 2 | 95 | 98 | 99 | 99 |
+| 3 | 87 | 92 | 85 | 90 |
+
 # Image
 
-![](Bryant Image.png)
+![](Bryantimage.jpg)
+
+```{r}
+version
+```
 
 
 ## R Markdown
