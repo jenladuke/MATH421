@@ -1,0 +1,209 @@
+
+---
+output: # rmarkdown::github_document
+  html_document:
+  pdf_document: default
+  word_document: default
+title: "Assignment 3.  Working with Data Frame. Base R Style
+
+-------
+
+Questions
+-------
+
+1. Create the data frame
+
+```{r}
+df = data.frame(Rank = c(0, 1, 2, 3),
+                Age = c(28, 34, 29, 42),
+                Name = c('Tom', 'Jack', 'Steve', 'Ricky'))
+df
+```
+
+
+2. Use read.csv to import the Covid19 Vaccination data
+```{r}
+setwd("C:/Users/student/Documents/GitHub/MATH421")
+df = read.csv('us-states.csv')
+```
+
+
+Show the names of the variables in the data
+
+```{r}
+names(df)
+```
+
+
+3. How many columns and rows the data have? 
+
+```{r}
+str(df)
+
+# There are five columns and 50,878 rows. 
+```
+
+
+4. How many missing values are there?  Show the missing values by columns.  What variable has the most number of missing values?
+
+```{r}
+sum(is.na(df))
+colSums(is.na(df))
+colMeans(is.na(df))
+
+# there are no missing values
+```
+
+
+5. What is the class of the `date` column. Change the `date` columns to `date` type using the `as.Date` function. Show the new class of the `date` column. 
+```{r}
+class(df$date)
+df$date = as.Date(df$date)
+str(df)
+```
+
+
+6. What is the class of the date column. Change the date columns to date type using the as.Date function. Show the new class of the date column.
+```{r}
+class(df$Date)
+
+names(df) [1] = 'Date'
+names(df) [2] = 'State'
+names(df) [3] = 'Fips'
+names(df) [4] = 'Cases'
+names(df) [5] = 'Deaths'
+names(df)
+
+class(df$Date)
+```
+
+
+7. Find the average number of cases per day. Find the maximum cases a day.  
+```{r}
+mean(df$Cases, na.rm=TRUE)
+max(df$Cases, na.rm=TRUE)
+```
+
+
+8. How many states are there in the data?  
+```{r}
+length(table(df$State))
+```
+
+
+9. Create a new variable `weekdays` to store the weekday for each rows. 
+```{r}
+df$weekdays <- weekdays(df$Date)
+```
+
+
+10. Create the categorical variable `death2` variable taking the values as follows
+
+- `has_death` if there is a death that day
+-  `no_death` if there is no death that day
+```{r}
+df$Deaths2 = ifelse(df$Deaths==0, "No", "Yes")
+```
+
+
+Find the frequency and relative frequency of `no_death` and `has_death`. 
+
+11. Find the first quartile (Q1), second quartile (Q2) and and third quartile (Q3) of the variable `death`. (Hint:  Use the `summary` function)
+```{r}
+summary(df$Deaths)
+```
+
+
+12. Create the categorical variable `death3` variable taking the values as follows
+
+- `low_death` if the number of deaths smaller than the 25 percentile (Q1)
+
+- `mid_death` if the number of deaths from Q1 to Q3
+
+- `high_death` if the number of deaths greater than Q3
+```{r}
+library(dplyr)
+df$Death3 = case_when(df$Deaths <4046 ~ "Low", 
+                      df$Deaths <12674 ~ "Medium", 
+                      TRUE ~ "High" )
+```
+
+
+13. Find the average cases in Rhode Island in 2021
+```{r}
+df1 = df[df$Date>'2021-01-01',] 
+by (df$Cases, df$State, mean)
+```
+
+
+14. Find the median cases by weekdays in Rhode Island in 2021 
+```{r}
+df$weekdays <- weekdays(df$Date)
+df1 = df[df$State=='Rhode Island',]
+by(data = df1$Deaths, INDICES = df1$weekdays, FUN = median)
+```
+
+
+15. Compare the median cases in Rhode Island in June, July, August and September in 2021. 
+```{r}
+df$month <- months(df$Date)
+
+df$month <- months(df$Date)
+df1 = df[df$State=='Rhode Island',]
+by(data = df1$Deaths, INDICES = df1$month, FUN = median)
+```
+
+
+16.  Find your own dataset, import it and implement the following functions on the data
+
+- head
+- str
+- names
+- mean, min, max
+- table
+- is.na
+- colSums
+- class
+- cor
+- by
+- ifelse
+- case_when
+```{r}
+setwd("C:/Users/student/Documents/GitHub/MATH421")
+read.csv("titanic (2).csv")
+dft = read.csv("titanic (2).csv")
+
+head(dft)
+str(dft)
+names(dft)
+sum(is.na(dft))
+colSums(is.na(dft))
+colMeans(is.na(dft))
+mean(dft$Survived, na.rm=TRUE)
+max(dft$Survived, na.rm=TRUE)
+cor(dft$Fare, dft$SibSp)
+by(dft$Survived, dft$Cabin, mean)
+dft$Survived1 <- ifelse(dft$Survived==0, 
+                        'No_Survivors','Has_Survivors')
+dft$Survived1 <- case_when(dft$Survived==0 ~ 'No_Survivors', 
+                           TRUE ~ 'Has_Survivors')
+
+summary(dft)
+
+```
+
+
+17.  In the dataset in #16, practice the follows.  You can reuse the code of 16. 
+
+- Create a categorical variable from a continuous variable
+- From one catego;rical variable, create a new categorical variable with fewer categories
+```{r}
+dft$Survived1 <- ifelse(dft$Survived==0, 
+                        'No_Survivors','Has_Survivors')
+dft$Embarked2 = ifelse(dft$Embarked==0, "Q", "S")
+
+summary(dft)
+```
+
+
+If you do not have a data, you can use [the titanic dataset](https://www.kaggle.com/competitions/titanic/overview), which can be downloaded at [this link](../data/titanic.csv)
