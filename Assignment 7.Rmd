@@ -1,0 +1,216 @@
+---
+title: "Assignment 7"
+author: "Jen LaDuke"
+date: "2024-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Make a plot using facet_wrap by one categorical variable (facet_wrap(~variable1))
+```{r}
+library(tidyverse)
+library(knitr)
+library(ggplot2)
+df <- df %>% 
+    mutate(`Weight (kg)` = as.character(`Weight (kg)`))
+df %>% 
+    ggplot() + 
+    geom_point(mapping = aes(x = Age, y = `Weight (kg)`)) + 
+    facet_wrap(~Experience_Level)
+```
+
+### Experience 1 and 2 has a lot of variety in weights, while level 3, the experts, have a smaller range. More experienced individuals may have reached plateaus in their weight, leading to less variability. This can happen as they become more specialized in their training.
+
+
+
+Make a plot using facet_wrap by two categorical variables (facet_wrap(~variable1+variable2))
+```{r}
+df <- df %>% 
+  mutate(`Workout_Frequency (days/week)` = as.character(`Workout_Frequency (days/week)`))
+df %>% 
+    ggplot() + 
+    geom_point(mapping = aes(x = Age, y = `Weight (kg)`)) + 
+    facet_wrap(~Experience_Level + `Workout_Frequency (days/week)`) + 
+    labs(
+        title = "Relationship Between Age and Weight (kg)",
+        x = "Age (years)",
+        y = "Weight (kg)",
+        caption = "Data Source: More variation in weight with less experience and less freuquency"
+    )
+```
+
+### The plot reveals that individuals who work out more frequently tend to have less variation in weight, suggesting that regular exercise contributes to greater weight stability.
+
+Make a plot using position ='dodge'.
+```{r}
+df <- df %>% 
+    mutate(`Experience_Level` = as.character(`Experience_Level`))
+df %>% 
+  ggplot()+ 
+    geom_bar(mapping=aes(x= Gender, fill=Experience_Level), 
+             position = 'dodge')
+ labs(
+        title = "Distribution of Experience Levels by Gender",
+        x = "Gender",
+        y = "Count",
+        fill = "Experience Level",
+        caption = "Data Source: More people are experience level 1 or 2"
+    )
+```
+
+### The plot indicates that both females and males are predominantly represented at experience level 2, with a slightly higher number of males. This trend may suggest that experience level 2 is the most common stage of engagement in the activities measured, possibly reflecting a threshold where individuals feel comfortable and competent.
+
+Make a plot using position ='fill'.
+```{r}
+df %>% 
+  ggplot() + 
+  geom_bar(mapping = aes(x = Gender, fill = Experience_Level), 
+           position = 'fill') + 
+  labs(
+    title = "Proportional Distribution of Experience Levels by Gender",
+    x = "Gender",
+    y = "Proportion",
+    fill = "Experience Level",
+    caption = "Data Source: More people are experience level 1 or 2"
+  )
+
+
+```
+
+### Each bar represents 100% of the individuals in that gender, with different colors indicating the proportion of each experience level. 
+
+Make a plot using geom_col.
+```{r}
+df %>% 
+  group_by(Experience_Level) %>% 
+  summarise(average_age = mean(Age, na.rm = TRUE)) %>% 
+  ggplot() + 
+    geom_col(mapping = aes(x = Experience_Level, y = average_age)) + 
+    labs(
+        title = "Average Age by Experience Level",
+        x = "Experience Level",
+        y = "Average Age (years)",
+        caption = "Data Source: The average age range across all experience levels is consistent."
+    )
+
+
+```
+
+### The bar plot indicates that there is little to no variation in average age across the different experience levels, suggesting that individuals of various ages are participating in the activity at similar stages. 
+
+Change the theme of one of your plots.
+```{r}
+df %>% 
+    ggplot() + 
+    geom_bar(mapping = aes(x = Gender, fill = Experience_Level), 
+             position = 'fill') + 
+    theme_dark() +
+    labs(
+        title = "Proportional Distribution of Experience Levels by Gender",
+        x = "Gender",
+        y = "Proportion",
+        fill = "Experience Level",
+        caption = "Data Source: More people are experience level 1 or 2"
+    )
+```
+
+
+Make a plot using combo filter + ggplot
+```{r}
+df %>% 
+    filter(Age>=18, Age<=35) %>% 
+    ggplot()+
+    geom_bar(mapping=aes(x=Gender, fill=Experience_Level)) +
+    labs(
+        title = "Gender Distribution by Experience Level (Ages 18-35)",
+        x = "Gender",
+        y = "Count",
+        fill = "Experience Level",
+        caption = "Mostly experience level 1 or 2")
+```
+
+### The bar plot indicates that the majority of participants within the age range of 18 to 35 fall into experience levels 1 and 2. This suggests that younger individuals may be more likely to engage as beginners or in early stages of their experience, reflecting a trend where newcomers dominate these levels.
+
+Make a plot using combo group_by + summarise + geom_col
+```{r}
+df %>% 
+    group_by(Experience_Level, Gender) %>% 
+    summarise(average_age = mean(Age, na.rm = TRUE), .groups = 'drop') %>% 
+    ggplot() +
+    geom_col(aes(x = Gender, y = average_age, fill = Experience_Level), position = 'dodge') +
+    labs(
+        title = "Average Age by Gender and Experience Level",
+        x = "Gender",
+        y = "Average Age (years)",
+        fill = "Experience Level",
+        caption = "Data Source: Slightly more people at experience level 1"
+    )
+
+```
+
+### The bar plot shows that there are slightly more individuals at experience level 1 compared to other levels, indicating that many participants are just starting their journey in the activity. This trend may suggest that the entry barriers to experience level 1 are lower, attracting a higher number of newcomers.
+
+Save a plot and put a link of the plot to your Github Webpage. To link a plot abc.png you just need to insert the following on the README.md
+
+[Link to the plot](abc.png)
+
+In this question, we will use the Covid19 vaccination data for the US. The data and data dictionary can be found at the below link:
+Data
+library(tidyverse)
+df <- read_csv('https://bryantstats.github.io/math421/data/vaccinations-by-manufacturer.csv')
+
+Geom_point makes scatter plots, which plot two numeric (or Date) variables. A third categorical variable is often brought in for color. For example, we can compare different vaccine types used in the US by
+
+df %>% 
+  filter(location=='United States') %>% 
+  ggplot()+
+  geom_point(mapping = aes(x = date, 
+                                    y = total_vaccinations, 
+                                    color = vaccine))
+
+
+
+Do the follows.
+
+Use geom_point to compare the vaccines used by date in Argentina in 2022.
+
+Change geom_point to geom_line in the above codes to have the corresponding line plots.
+
+(Using the same dataset as in 10.) Sometime we need to do some calculations on the data before plotting. For example, the below codes is to compare the total vaccines (including all types of vaccines) by date between the US and the EU
+# the total vaccines (including all types of vaccines) by date
+d1 <- df %>% 
+  filter(location %in% c('United States', 'European Union')) %>% 
+  group_by(date, location) %>% 
+  summarise(total_vac2=sum(total_vaccinations, na.rm=TRUE))
+
+# Plot
+d1 %>% 
+  ggplot()+
+  geom_point(mapping=aes(x=date, 
+                         y=total_vac2, 
+                         color=location))
+
+
+
+Notice that the above codes could be piped in one
+
+df %>% 
+  filter(location %in% c('United States', 'European Union')) %>% 
+  group_by(date, location) %>% 
+  summarise(total_vac2=sum(total_vaccinations, na.rm=TRUE)) %>% 
+  ggplot()+
+  geom_point(mapping=aes(x=date, 
+                         y=total_vac2, 
+                         color=location))
+
+Do the follows.
+
+Use geom_point compare the total vaccines (including all types of vaccines) by date between countries/regions in Asia
+
+Use geom_point compare the total vaccines (including all types of vaccines) by date between countries/regions in South America in 2021
+
