@@ -11,13 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-Make a plot using facet_wrap by one categorical variable (facet_wrap(~variable1))
+1. Make a plot using facet_wrap by one categorical variable (facet_wrap(~variable1))
 ```{r}
 library(tidyverse)
 library(knitr)
 library(ggplot2)
+df = read_csv('gym_members_exercise_tracking.csv')
 df <- df %>% 
-    mutate(`Weight (kg)` = as.character(`Weight (kg)`))
+    mutate(`Weight (kg)` = as.numeric(`Weight (kg)`))
 df %>% 
     ggplot() + 
     geom_point(mapping = aes(x = Age, y = `Weight (kg)`)) + 
@@ -28,7 +29,7 @@ df %>%
 
 
 
-Make a plot using facet_wrap by two categorical variables (facet_wrap(~variable1+variable2))
+2. Make a plot using facet_wrap by two categorical variables (facet_wrap(~variable1+variable2))
 ```{r}
 df <- df %>% 
   mutate(`Workout_Frequency (days/week)` = as.character(`Workout_Frequency (days/week)`))
@@ -46,7 +47,7 @@ df %>%
 
 ### The plot reveals that individuals who work out more frequently tend to have less variation in weight, suggesting that regular exercise contributes to greater weight stability.
 
-Make a plot using position ='dodge'.
+3. Make a plot using position ='dodge'.
 ```{r}
 df <- df %>% 
     mutate(`Experience_Level` = as.character(`Experience_Level`))
@@ -65,7 +66,7 @@ df %>%
 
 ### The plot indicates that both females and males are predominantly represented at experience level 2, with a slightly higher number of males. This trend may suggest that experience level 2 is the most common stage of engagement in the activities measured, possibly reflecting a threshold where individuals feel comfortable and competent.
 
-Make a plot using position ='fill'.
+4. Make a plot using position ='fill'.
 ```{r}
 df %>% 
   ggplot() + 
@@ -84,7 +85,7 @@ df %>%
 
 ### Each bar represents 100% of the individuals in that gender, with different colors indicating the proportion of each experience level. 
 
-Make a plot using geom_col.
+5. Make a plot using geom_col.
 ```{r}
 df %>% 
   group_by(Experience_Level) %>% 
@@ -103,7 +104,7 @@ df %>%
 
 ### The bar plot indicates that there is little to no variation in average age across the different experience levels, suggesting that individuals of various ages are participating in the activity at similar stages. 
 
-Change the theme of one of your plots.
+6. Change the theme of one of your plots.
 ```{r}
 df %>% 
     ggplot() + 
@@ -120,7 +121,7 @@ df %>%
 ```
 
 
-Make a plot using combo filter + ggplot
+7. Make a plot using combo filter + ggplot
 ```{r}
 df %>% 
     filter(Age>=18, Age<=35) %>% 
@@ -136,7 +137,7 @@ df %>%
 
 ### The bar plot indicates that the majority of participants within the age range of 18 to 35 fall into experience levels 1 and 2. This suggests that younger individuals may be more likely to engage as beginners or in early stages of their experience, reflecting a trend where newcomers dominate these levels.
 
-Make a plot using combo group_by + summarise + geom_col
+8. Make a plot using combo group_by + summarise + geom_col
 ```{r}
 df %>% 
     group_by(Experience_Level, Gender) %>% 
@@ -155,51 +156,84 @@ df %>%
 
 ### The bar plot shows that there are slightly more individuals at experience level 1 compared to other levels, indicating that many participants are just starting their journey in the activity. This trend may suggest that the entry barriers to experience level 1 are lower, attracting a higher number of newcomers.
 
-Save a plot and put a link of the plot to your Github Webpage. To link a plot abc.png you just need to insert the following on the README.md
+9. Save a plot and put a link of the plot to your Github Webpage. To link a plot abc.png you just need to insert the following on the README.md
 
-[Link to the plot](abc.png)
+Photo for 7th assignment: [Graph!](Graph!.png)
 
-In this question, we will use the Covid19 vaccination data for the US. The data and data dictionary can be found at the below link:
-Data
+10. In this question, we will use the Covid19 vaccination data for the US. The data and data dictionary can be found at the below link:
+```{r}
 library(tidyverse)
-df <- read_csv('https://bryantstats.github.io/math421/data/vaccinations-by-manufacturer.csv')
+df2 = read_csv('vaccinations-by-manufacturer.csv')
+```
 
 Geom_point makes scatter plots, which plot two numeric (or Date) variables. A third categorical variable is often brought in for color. For example, we can compare different vaccine types used in the US by
-
-df %>% 
+```{r}
+df2 %>% 
   filter(location=='United States') %>% 
   ggplot()+
   geom_point(mapping = aes(x = date, 
                                     y = total_vaccinations, 
                                     color = vaccine))
-
-
+```
 
 Do the follows.
 
 Use geom_point to compare the vaccines used by date in Argentina in 2022.
+```{r}
+df2_filtered <- df2 %>%
+  filter(location == "Argentina")
+df2 %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = date, y = vaccine, color = vaccine)) + 
+  facet_wrap(~ vaccine) + 
+  labs(
+      title = "Vaccines Used by Date in Argentina (2022)",
+      x = "Date",
+      y = "Vaccine Type",
+      color = "Vaccine"
+  ) 
+
+```
+### Argintina used all various types of vaccines. 
 
 Change geom_point to geom_line in the above codes to have the corresponding line plots.
+```{r}
+df2_filtered <- df2 %>%
+  filter(location == "Argentina")
+df2 %>% 
+  ggplot() + 
+  geom_line(mapping = aes(x = date, y = vaccine, color = vaccine)) + 
+  facet_wrap(~ vaccine) + 
+  labs(
+      title = "Vaccines Used by Date in Argentina (2022)",
+      x = "Date",
+      y = "Vaccine Type",
+      color = "Vaccine"
+  ) 
+```
+### Argintina used all various types of vaccines.
 
-(Using the same dataset as in 10.) Sometime we need to do some calculations on the data before plotting. For example, the below codes is to compare the total vaccines (including all types of vaccines) by date between the US and the EU
+11. (Using the same dataset as in 10.) Sometime we need to do some calculations on the data before plotting. For example, the below codes is to compare the total vaccines (including all types of vaccines) by date between the US and the EU
+```{r}
 # the total vaccines (including all types of vaccines) by date
-d1 <- df %>% 
+d2 <- df2 %>% 
   filter(location %in% c('United States', 'European Union')) %>% 
   group_by(date, location) %>% 
   summarise(total_vac2=sum(total_vaccinations, na.rm=TRUE))
 
 # Plot
-d1 %>% 
+d2 %>% 
   ggplot()+
   geom_point(mapping=aes(x=date, 
                          y=total_vac2, 
                          color=location))
+```
 
 
 
 Notice that the above codes could be piped in one
-
-df %>% 
+```{r}
+df2 %>% 
   filter(location %in% c('United States', 'European Union')) %>% 
   group_by(date, location) %>% 
   summarise(total_vac2=sum(total_vaccinations, na.rm=TRUE)) %>% 
@@ -207,10 +241,47 @@ df %>%
   geom_point(mapping=aes(x=date, 
                          y=total_vac2, 
                          color=location))
+```
 
 Do the follows.
 
 Use geom_point compare the total vaccines (including all types of vaccines) by date between countries/regions in Asia
+```{r}
+df2 %>% 
+  filter(location %in% c('China', 'India', 'Japan', 'South Korea', 'Indonesia')) %>%  
+  group_by(date, location) %>% 
+  summarise(total_vaccines = sum(total_vaccinations, na.rm = TRUE), .groups = 'drop') %>% 
+  ggplot() +
+  geom_point(mapping = aes(x = date, 
+                           y = total_vaccines, 
+                           color = location)) +
+  labs(
+      title = "Total Vaccinations by Date in Selected Asian Countries",
+      x = "Date",
+      y = "Total Vaccinations",
+      color = "Country/Region"
+  )
+```
+### Both Japan and South Korea increase vaccines as the date progresses. Japan has more vaccines and increases at a faster rate than South Korea. 
+
 
 Use geom_point compare the total vaccines (including all types of vaccines) by date between countries/regions in South America in 2021
+```{r}
+df2 %>% 
+  filter(location %in% c('Argentina', 'Brazil', 'Chile', 'Colombia', 'Peru', 'Uruguay') & 
+         year(date) == 2021) %>%  
+  group_by(date, location) %>% 
+  summarise(total_vaccines = sum(total_vaccinations, na.rm = TRUE), .groups = 'drop') %>% 
+  ggplot() +
+  geom_point(mapping = aes(x = date, 
+                           y = total_vaccines, 
+                           color = location)) +
+  labs(
+      title = "Total Vaccinations by Date in South America",
+      x = "Date",
+      y = "Total Vaccinations",
+      color = "Country/Region"
+  )
+```
+### Argintina has the most total vaccines. Uruguay has the least and minimal growth with some outliers lower. 
 
