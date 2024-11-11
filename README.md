@@ -1,5 +1,4 @@
-## MATH421
-# By Jen LaDuke
+# MATH421
  
 This is my first assignment: [Assignment 1](Assignment1.html) 
 
