@@ -1,0 +1,83 @@
+---
+title: "Midterm421"
+author: "Jen LaDuke"
+date: "2024-12-3"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Total count by gender
+![image](picture1.png)
+
+## Average Age by Month of Admission 
+![image](picture2.png)
+
+## Average Age by Gender by Month of Addmission 
+![image](picture3.png)
+
+## LOS by Admtype
+![image](picture4.png)
+
+## Total charge by provider
+![image](picture5.png)
+
+## Relationship Between Age and Total Charges
+![image](picture6.png)
+
+## Total charges by gender
+![image](picture7.png)
+
+## Total LOS by age 
+![image](picture8.png)
+
+## Total LOS by gender
+![image](picture9.png)
+
+## Provider total charge by month
+![image](picture10.png)
+
+## Summary
+- Females outnumber males and show greater age variance, males typically incur higher total charges, though an exceptional case among females stands out 
+- Middle-aged individuals drive the highest costs, yet the weak correlation between age and LOS suggests that factors beyond age significantly influence hospital stays. Provider charges also vary widely, with Rhode Island Hospital leading consistently
+- Overall, the data points to predictable trends in some areas but significant variability and outliers in others, suggesting the need for a closer look at specific drivers of cost and care.
+
+
+## Comparison of the models 
+![image](image.png)
+
+## Final Selection 
+![image](Screenshot.png)
+
+## Target set as sex 
+![image](tree.png)
+## Tree approach 
+![image](rpart.png)
+
+
+## Forest ranger using 'ranger'
+![image](ranger.png)
+
+## Comparing
+![image](plot.png)
+
+
+## Summary
+- The forest model turned out to be more accurate than the decision tree for the df dataset, which makes sense since forests are better at handling complex patterns. 
+- For the dfa dataset, both models scored a perfect accuracy of 1. Great at first, but it’s probably a sign of overfitting—basically, the models might be memorizing the data instead of learning how to handle new data. 
+- Increasing the maximum tree depth boosted accuracy, likely because deeper trees can make more specific splits and pick up on finer details.
+- It’s a trade-off since deeper trees and forests are more prone to overfitting. To avoid this, it’s important to use techniques like pruning, cross-validation, or limiting tree depth to make sure the models work well with new data.
+
+
+
+
+
+
+
+
+
