@@ -568,7 +568,7 @@ dfa = df %>%
 
 ```{r}
 dfa = dfa %>% 
-  select(age, sex, provider, moa, mod, admtype, los, target)
+  select(age, -sex, provider, moa, mod, admtype, los, target)
 ```
 
 
@@ -631,14 +631,14 @@ pred <- predict(tree_approacha, dfa_test)
 cm <- confusionMatrix(data = pred, reference = dfa_test$target, positive = "2")
 cm$overall[1]
 
-## Pick either since both are 1, overfitting 
+## Pick decision tree since it has a 3% higher accuracy compared to forest.
 ```
 
 
 7. Write a paragraph to summarize the section and give your comments on the results. 
 
 ```{r}
-## The forest model turned out to be more accurate than the decision tree for the df dataset, which makes sense since forests are better at handling complex patterns. But for the dfa dataset, both models scored a perfect accuracy of 1. That sounds great at first, but it’s probably a sign of overfitting—basically, the models might be memorizing the data instead of learning how to handle new data. I also noticed that increasing the maximum tree depth boosted accuracy, likely because deeper trees can make more specific splits and pick up on finer details. While this can improve performance, it’s a trade-off since deeper trees and forests are more prone to overfitting. To avoid this, it’s important to use techniques like pruning, cross-validation, or limiting tree depth to make sure the models work well with new data.
+## The forest model turned out to be more accurate than the decision tree for the df dataset, which makes sense since forests are better at handling complex patterns. When target = sex the decision tree had a better accuracy compared to the forest.I also noticed that increasing the maximum tree depth boosted accuracy, likely because deeper trees can make more specific splits and pick up on finer details. 
 ```
 
 -------
