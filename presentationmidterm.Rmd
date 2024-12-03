@@ -51,6 +51,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Target set as sex 
 ![image](target.png)
+
 ## Tree approach 
 ![image](treeapproach.png)
 
