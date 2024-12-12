@@ -1,0 +1,39 @@
+---
+title: "421MATHFINAL"
+author: "Jen LaDuke"
+date: "2024-12-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is the first question: [Question #1](Q1.html)
+
+This is the second question: [Question #2](flex_template.html)
+
+This is the third question: [Question #3](https://jladuke.shinyapps.io/1_flex_select/)
+
+This is the fourth question: [Question #4](https://jladuke.shinyapps.io/Question4/)
+
+This if the fifth question: [Question #5](https://jladuke.shinyapps.io/Question5/)
+
+This if the sixth question: [Question #6](https://jladuke.shinyapps.io/Question6/)
+
+This is the seventh question: [Question #7](https://jladuke.shinyapps.io/Question7/)
+
+This is the eighth question: [Question #8](https://jenladuke.shinyapps.io/Question8/)
+
+This is the ninth question: [Question #9](https://jenladuke.shinyapps.io/Question9/)
+
+This is the tenth question: [Question #10](https://jenladuke.shinyapps.io/Question10/)
+
+
+
+
+
+
+
+
+
